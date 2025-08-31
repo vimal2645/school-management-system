@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.14",
     "multer": "^2.0.2",
     "mysql2": "^3.14.3",
     "next": "15.5.2",
