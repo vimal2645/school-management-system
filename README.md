@@ -1,40 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+🏫 School Management System
+A simple school management system built with Next.js, React, and MySQL. Add and view schools with a clean, responsive interface.
 
-## Getting Started
+### Features
+Add Schools: Form to register new schools with validation
 
-First, run the development server:
+View Schools: Display schools in a clean grid layout
 
-```bash
+Image Upload: Upload and display school images
+
+Responsive: Works on mobile and desktop
+
+Form Validation: Email, phone, and required field validation
+
+### Tech Stack
+Frontend: Next.js, React, CSS Modules
+
+Backend: Node.js, MySQL
+
+Forms: react-hook-form
+
+Database: MySQL
+
+### Quick Start
+1. Install Dependencies
+bash
+npm install
+2. Setup Database
+Create MySQL database:
+
+sql
+CREATE DATABASE school_management;
+USE school_management;
+
+CREATE TABLE schools (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name TEXT NOT NULL,
+    address TEXT NOT NULL,
+    city TEXT NOT NULL,
+    state TEXT NOT NULL,
+    contact BIGINT NOT NULL,
+    image TEXT,
+    email_id TEXT NOT NULL
+);
+3. Environment Variables
+Create .env.local file:
+
+text
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=school_management
+DB_PORT=3306
+4. Create Upload Folder
+bash
+mkdir public/schoolImages
+5. Run Project
+bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Open http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+📁 Pages
+Home (/) - Welcome page with navigation
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Add School (/addSchool) - Form to add new schools
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Schools Directory (/showSchools) - View all schools
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+🗄️ Database
+Schools Table:
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+id - Auto increment ID
 
-## Learn More
+name - School name
 
-To learn more about Next.js, take a look at the following resources:
+address - Full address
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+city - City name
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+state - State name
 
-## Deploy on Vercel
+contact - Phone number (10 digits)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+email_id - Email address
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+image - Image file path
+
+
+Schools Directory
+Clean grid layout showing school information and images.
+
+
+
+👨‍💻 Developer
+Created by: vimal prakash 
+
+GitHub: https://github.com/vimal2645
+
+Email: vimalprakashgnesvns@gmail.com
+
+📄 Assignment Details
+This project was built as part of a web development assignment with the following requirements:
+
+✅ Next.js with React
+
+✅ MySQL database integration
+
+✅ Form validation with react-hook-form
+
+✅ Image upload to schoolImages folder
+
+✅ Responsive design
+
+✅ E-commerce style display
