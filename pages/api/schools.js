@@ -1,17 +1,22 @@
-import { getSchools, addSchool, createSchoolsTable } from '../../lib/turso-db';
+import { getSchools, addSchool, createSchoolsTable } from '../../lib/postgres-db';
 
 export default async function handler(req, res) {
-  // Ensure table exists on first run
-  try {
-    await createSchoolsTable();
-  } catch (e) {
-    // Table already exists or error creating
-  }
+  // Create table if it doesn't exist
+  await createSchoolsTable();
 
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
+    try {
+      const schools = await getSchools();
+      res.status(200).json(schools);
+    } catch (error) {
+      console.error('GET error:', error);
+      res.status(500).json({ error: 'Failed to fetch schools' });
+    }
+  } 
+  else if (req.method === 'POST') {
     try {
       const { name, address, city, state, contact, email_id, image } = req.body;
-
+      
       // Validate required fields
       if (!name || !address || !city || !state || !contact || !email_id) {
         return res.status(400).json({ error: 'Missing required fields' });
@@ -33,17 +38,8 @@ export default async function handler(req, res) {
         message: 'School added successfully!'
       });
     } catch (error) {
-      console.error('Database error:', error);
+      console.error('POST error:', error);
       res.status(500).json({ error: 'Failed to add school: ' + error.message });
-    }
-  } 
-  else if (req.method === 'GET') {
-    try {
-      const schools = await getSchools();
-      res.status(200).json(schools);
-    } catch (error) {
-      console.error('Database error:', error);
-      res.status(500).json({ error: 'Failed to fetch schools: ' + error.message });
     }
   }
   else {
