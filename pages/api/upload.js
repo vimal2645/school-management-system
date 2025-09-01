@@ -3,27 +3,27 @@ import path from 'path';
 import fs from 'fs';
 
 // Ensure upload directory exists
-const uploadDir = './public/schoolImages';
+const uploadDir = path.join(process.cwd(), 'public', 'schoolImages');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 const storage = multer.diskStorage({
-  destination: './public/schoolImages',
-  filename: (req, file, cb) => {
-    // Create unique filename with timestamp
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
     const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
     cb(null, uniqueName);
   }
 });
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 5 * 1024 * 1024, // 5MB
   },
   fileFilter: (req, file, cb) => {
-    // Accept only image files
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
@@ -32,35 +32,41 @@ const upload = multer({
   }
 });
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  upload.single('image')(req, res, (err) => {
+  upload.single('image')(req, res, function (err) {
     if (err) {
       console.error('Upload error:', err);
-      return res.status(500).json({ error: err.message || 'Upload failed' });
+      return res.status(400).json({ error: err.message });
     }
 
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    // Return the file path relative to public directory
-    const imagePath = `/schoolImages/${req.file.filename}`;
-    
-    res.status(200).json({ 
-      success: true, 
-      imagePath: imagePath,
+    // Store just the filename, we'll handle the path in the frontend
+    const imagePath = req.file.filename;
+
+    console.log('File uploaded successfully:', {
       filename: req.file.filename,
-      originalName: req.file.originalname
+      path: imagePath,
+      size: req.file.size,
+      fullPath: req.file.path
+    });
+
+    res.status(200).json({
+      success: true,
+      imagePath: imagePath,
+      filename: req.file.filename
     });
   });
 }
 
 export const config = {
   api: {
-    bodyParser: false, // Important: disable body parser for file uploads
-  },
+    bodyParser: false
+  }
 };
